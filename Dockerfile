@@ -1,6 +1,11 @@
 # Fase 1: Bouw mcrcon in een tijdelijke 'builder' image
 FROM debian:buster-slim AS builder
 
+# Vertel APT om de archief-repositories te gebruiken voor de oude 'Buster' release
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+ && sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+ && sed -i '/buster-updates/d' /etc/apt/sources.list
+
 # Installeer de benodigde tools om te compileren
 RUN apt-get update && apt-get install -y git build-essential
 
